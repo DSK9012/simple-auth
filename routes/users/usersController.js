@@ -6,7 +6,7 @@ const User = require('./usersEntity');
 const userController = {
   getUser: async (user, successCB, errorCB) => {
     try {
-      const userInfo = await User.findById(user._id).select('-password').select('-avatar');
+      const userInfo = await User.findById(user._id).select('-password');
       return successCB({ user: userInfo });
     } catch (error) {
       return errorCB(error.message);
@@ -17,7 +17,7 @@ const userController = {
     if (!errors.isEmpty()) {
       return errorCB({ errors: errors.array() });
     }
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, password, confirmPassword, reactExperience } = req.body;
 
     try {
       // see user existed or not
@@ -32,25 +32,12 @@ const userController = {
       }
 
       // creating user object
-      let user;
-      if (req?.file?.buffer) {
-        user = new User({
-          name,
-          email,
-          password,
-          active: false,
-          lastActive: Date.now(),
-          avatar: req.file.buffer,
-        });
-      } else {
-        user = new User({
-          name,
-          email,
-          password,
-          active: false,
-          lastActive: Date.now(),
-        });
-      }
+      const user = new User({
+        name,
+        email,
+        password,
+        reactExperience,
+      });
 
       // hashing the password before saving it in DB
       const salt = await bcrypt.genSalt(10);
@@ -70,7 +57,7 @@ const userController = {
       // signing our token
       jwt.sign(payload, 'myjwtsecret', { expiresIn: 3600 }, async (error, token) => {
         if (error) throw error;
-        const userInfo = await User.findOne({ email }).select('-password').select('-avatar');
+        const userInfo = await User.findOne({ email }).select('-password');
         return successCB({ user: userInfo, token });
       });
     } catch (error) {
@@ -108,33 +95,63 @@ const userController = {
       // signing our token
       jwt.sign(payload, 'myjwtsecret', { expiresIn: 3600 }, async (error, token) => {
         if (error) throw error;
-        const user = await User.findOne({ email }).select('-password').select('-avatar');
+        const user = await User.findOne({ email }).select('-password');
         return successCB({ user, token });
       });
     } catch (error) {
       return errorCB('server error');
     }
   },
-  sendAvatar: async (req, res, successCB, errorCB) => {
-    try {
-      const user = await User.findById(req.params.userId);
-      if (!user || !user.avatar) throw new Error('User not found');
-
-      res.set('Content-Type', 'image/jpg');
-      return successCB(user.avatar);
-    } catch (error) {
-      return errorCB(error);
-    }
-  },
   searchUsers: async (req, res, successCB, errorCB) => {
     try {
-      const query = new RegExp(req.query.search, 'i');
-      const users = await User.find({ name: query }).limit(10).select('-password').select('-avatar');
+      let query = {};
+      if (req.query.search && req.query.exp) {
+        query = {
+          name: new RegExp(req.query.search, 'i'),
+          reactExperience: getQuery(req.query.exp),
+        };
+      } else if (req.query.search) {
+        query = {
+          name: new RegExp(req.query.search, 'i'),
+        };
+      } else if (req.query.exp) {
+        query = {
+          reactExperience: getQuery(req.query.exp),
+        };
+      }
+      console.log(query);
+      const users = await User.find(query).select('-password');
       return successCB({ users });
     } catch (error) {
       return errorCB(error);
     }
   },
+  updateUser: async (req, res, successCB, errorCB) => {
+    try {
+      await User.updateOne(
+        { _id: req.body.userId },
+        { name: req.body.name, reactExperience: req.body.reactExperience }
+      );
+      return successCB('User updated successfully.');
+    } catch (error) {
+      return errorCB(error);
+    }
+  },
+  deleteUser: async (req, res, successCB, errorCB) => {
+    try {
+      await User.deleteOne({ _id: req.body.userId });
+      return successCB('User deleted successfully.');
+    } catch (error) {
+      return errorCB(error);
+    }
+  },
+};
+
+const getQuery = (exp) => {
+  if (exp === '1-2') return { $gte: 1, $lte: 2 };
+  else if (exp === '3-5') return { $gte: 3, $lte: 5 };
+  else if (exp === '6-10') return { $gte: 6, $lte: 10 };
+  else return { $gt: 10 };
 };
 
 module.exports = userController;

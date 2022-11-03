@@ -5,6 +5,7 @@ const userEntity = mongoose.Schema(
     name: {
       type: String,
       default: '',
+      require: true,
       trim: true,
     },
     email: {
@@ -20,18 +21,10 @@ const userEntity = mongoose.Schema(
       require: true,
       default: '',
     },
-    avatar: {
-      type: Buffer,
-      trim: true,
-      default: '',
-      alias: 'userImage',
-    },
-    active: {
-      type: Boolean,
-      default: false,
-    },
-    lastActive: {
-      type: Date,
+    reactExperience: {
+      type: Number,
+      require: true,
+      default: 0,
     },
   },
   {

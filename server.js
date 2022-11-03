@@ -22,5 +22,5 @@ app.use('/api', require('./routes/users/usersRouter'));
 
 const serverPort = serverConfig.serverPort;
 app.listen(serverPort, () => {
-  console.log(`Chat app listening on ${serverPort}`);
+  console.log(`SimpleAuth app listening on ${serverPort}`);
 });

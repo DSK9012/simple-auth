@@ -6,9 +6,6 @@ const userController = require('./usersController');
 const multer = require('multer');
 const upload = multer();
 
-//  @route GET /user
-//  @desc Get and verify user on every req
-//  @access Public
 router.get('/user', auth, async (req, res) => {
   try {
     userController.getUser(
@@ -19,21 +16,14 @@ router.get('/user', auth, async (req, res) => {
   } catch (error) {
     return res.status(500).json('Internal server error');
   }
-  // try {
-  //   const user = await User.findById(req.user._id).select('-password');
-  //   res.json(user);
-  // } catch (error) {
-  //   res.status(500).send('Server error');
-  // }
 });
 
-//  @route POST /user/register
-//  @desc Registering user
-//  @access Public
 router.post(
   '/user/register',
   upload.single('avatar'),
   [
+    check('name', 'name is required').not().isEmpty(),
+    check('reactExperience', 'React experience is required').not().isEmpty(),
     check('email', 'email is required').not().isEmpty(),
     check('password', 'Password is required').not().isEmpty(),
     check('email', 'Plesae enter a valid mail').isEmail(),
@@ -53,9 +43,6 @@ router.post(
   }
 );
 
-//  @route POST /user/login
-//  @desc  User login
-//  @access Public
 router.post(
   '/user/login',
   [check('email', 'Please enter a valid mail').isEmail(), check('password', 'Password is required').not().isEmpty()],
@@ -73,12 +60,12 @@ router.post(
   }
 );
 
-router.get('/user/avatar/:userId', async (req, res) => {
+router.post('/user/search', async (req, res) => {
   try {
-    userController.sendAvatar(
+    userController.searchUsers(
       req,
       res,
-      (avatar) => res.send(avatar),
+      (users) => res.send(users),
       (error) => res.status(404).json(error)
     );
   } catch (error) {
@@ -86,12 +73,25 @@ router.get('/user/avatar/:userId', async (req, res) => {
   }
 });
 
-router.post('/user/search', async (req, res) => {
+router.put('/user/update', async (req, res) => {
   try {
-    userController.searchUsers(
+    userController.updateUser(
       req,
       res,
-      (users) => res.send(users),
+      (result) => res.send(result),
+      (error) => res.status(404).json(error)
+    );
+  } catch (error) {
+    return res.status(500).json('Internal server error');
+  }
+});
+
+router.delete('/user/delete', async (req, res) => {
+  try {
+    userController.deleteUser(
+      req,
+      res,
+      (result) => res.send(result),
       (error) => res.status(404).json(error)
     );
   } catch (error) {

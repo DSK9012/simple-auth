@@ -60,7 +60,7 @@ router.post(
   }
 );
 
-router.get('/users', async (req, res) => {
+router.get('/users', auth, async (req, res) => {
   try {
     userController.getUsers(
       req,
@@ -73,7 +73,7 @@ router.get('/users', async (req, res) => {
   }
 });
 
-router.post('/user/search', async (req, res) => {
+router.post('/user/search', auth, async (req, res) => {
   try {
     userController.searchUsers(
       req,
@@ -86,7 +86,7 @@ router.post('/user/search', async (req, res) => {
   }
 });
 
-router.put('/user/update', async (req, res) => {
+router.put('/user/update', auth, async (req, res) => {
   try {
     userController.updateUser(
       req,
@@ -99,7 +99,7 @@ router.put('/user/update', async (req, res) => {
   }
 });
 
-router.delete('/user/delete', async (req, res) => {
+router.delete('/user/delete', auth, async (req, res) => {
   try {
     userController.deleteUser(
       req,

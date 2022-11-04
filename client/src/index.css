@@ -1,0 +1,48 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(20, 30, 43);
+  min-height: 100vh;
+  overflow: auto;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  margin-right: 5px;
+  height: 10px;
+  z-index: 99;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(170, 170, 170);
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  z-index: 99;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  display: none;
+}
+
+::-webkit-scrollbar-track:hover {
+  display: block;
+  z-index: 99;
+  background: rgb(224, 224, 224);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(119, 119, 119);
+  border: 1px solid rgb(224, 224, 224);
+}

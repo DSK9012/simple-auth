@@ -60,6 +60,19 @@ router.post(
   }
 );
 
+router.get('/users', async (req, res) => {
+  try {
+    userController.getUsers(
+      req,
+      res,
+      (users) => res.send(users),
+      (error) => res.status(404).json(error)
+    );
+  } catch (error) {
+    return res.status(500).json('Internal server error');
+  }
+});
+
 router.post('/user/search', async (req, res) => {
   try {
     userController.searchUsers(

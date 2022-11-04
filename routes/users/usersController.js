@@ -12,6 +12,14 @@ const userController = {
       return errorCB(error.message);
     }
   },
+  getUsers: async (req, res, successCB, errorCB) => {
+    try {
+      const users = await User.find().select('-password');
+      return successCB({ users });
+    } catch (error) {
+      return errorCB(error.message);
+    }
+  },
   registeruser: async (req, res, successCB, errorCB) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

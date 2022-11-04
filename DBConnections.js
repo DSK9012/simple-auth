@@ -1,6 +1,4 @@
-// const chalk=require('chalk');
 const mongoose = require('mongoose');
-const { mongoDBName } = require('./serverConfig');
 const serverConfig = require('./serverConfig');
 
 // Database Connection

@@ -1,0 +1,78 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "eslint:recommended",
+    "plugin:import/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:jest/recommended",
+    "plugin:testing-library/react",
+    "airbnb",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "root": true,
+  "plugins": ["react", "@typescript-eslint", "import", "react", "jsx-a11y", "prettier"],
+  "rules": {
+    "eol-last": 2,
+    "react/destructuring-assignment": 1,
+    "no-trailing-spaces": 2,
+    "indent": [2, 2, { "SwitchCase": 1 }],
+    "quotes": [2, "single"],
+    "import/no-unresolved": 0,
+    "react/react-in-jsx-scope": 0,
+    "import/order": [
+      2,
+      {
+        "groups": ["builtin", "external", "internal", "sibling", "parent", "index"]
+      }
+    ],
+    "no-unused-vars": [1, { "args": "none" }],
+    "no-unused-expressions": 2,
+    "object-curly-spacing": [1, "always"],
+    "import/extensions": 0,
+    "react/jsx-filename-extension": [
+      2,
+      {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    ],
+    "semi": 2,
+    "no-param-reassign": 0,
+    "no-use-before-define": 0,
+    "no-console": [1, { "allow": ["warn", "error"] }],
+    "react/jsx-pascal-case": [0],
+    "react/jsx-props-no-spreading": 0,
+    "react/prop-types": 0,
+    "react/function-component-definition": 0,
+    "react/jsx-no-constructed-context-values": 0,
+    "import/prefer-default-export": 0,
+    "no-underscore-dangle": 0,
+    "no-shadow": 0,
+    "no-plusplus": [1, { "allowForLoopAfterthoughts": true }],
+    "react-hooks/exhaustive-deps": 0
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "paths": ["src"]
+      }
+    }
+  }
+}

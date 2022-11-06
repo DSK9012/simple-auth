@@ -54,6 +54,7 @@ export const userStore = () => {
         data: { user, token },
       } = await axios.post('http://localhost:5000/api/user/register', userData);
       if (token) localStorage.setItem('token', token);
+      setAuthToken(localStorage.getItem('token'));
       setAuthenticated(true);
       setUser((prevState) => ({ ...prevState, user }));
       setLoading(false);
@@ -71,6 +72,7 @@ export const userStore = () => {
         data: { user, token },
       } = await axios.post('http://localhost:5000/api/user/login', userData);
       if (token) localStorage.setItem('token', token);
+      setAuthToken(localStorage.getItem('token'));
       setAuthenticated(true);
       setUser((prevState) => ({ ...prevState, user }));
       setLoading(false);

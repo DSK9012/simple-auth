@@ -1,22 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-import axios from 'axios';
-import { IUser } from 'helpers/types';
+import { useStore } from 'store/Store';
 
 const PrivatePage = () => {
-  const [users, setUsers] = useState<IUser[] | null>();
-
-  const getUsers = async () => {
-    try {
-      const {
-        data: { users },
-      } = await axios('http://localhost:5000/api/users');
-
-      setUsers(users);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const {
+    userContext: { users, getUsers },
+  } = useStore();
 
   useEffect(() => {
     getUsers();
@@ -35,7 +24,7 @@ const PrivatePage = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {users?.map((user) => (
+          {users.map((user) => (
             <TableRow key={user._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell component='th' scope='user'>
                 {user.name}

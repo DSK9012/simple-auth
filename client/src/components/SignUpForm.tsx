@@ -130,7 +130,6 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
       <Button
         fullWidth
         variant='contained'
-        disabled={!formik.dirty || !formik.isValid}
         sx={{
           margin: '8px 0',
         }}

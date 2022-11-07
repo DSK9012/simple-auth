@@ -66,7 +66,7 @@ export default function SignInForm({ handleFormChange }: ISignInFormProps) {
         error={hasError('password')}
         helperText={getHelpText('password')}
       />
-      <Button disabled={!formik.dirty || !formik.isValid} fullWidth variant='contained' onClick={handleSubmit}>
+      <Button fullWidth variant='contained' onClick={handleSubmit}>
         Sign In
       </Button>
       <$SignUpLink>

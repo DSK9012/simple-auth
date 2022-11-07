@@ -1,5 +1,6 @@
+import LogoutIcon from '@mui/icons-material/Logout';
 import { useEffect } from 'react';
-import { styled } from '@mui/material';
+import { Button, styled } from '@mui/material';
 import LoginPage from 'components/LoginPage';
 import PrivatePage from 'components/PrivatePage';
 import { useStore } from 'store/Store';
@@ -7,21 +8,18 @@ import setAuthToken from 'helpers/set-auth-token';
 
 const $Container = styled('div')(({ theme }) => ({
   height: '100vh',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexDirection: 'column',
   color: 'white',
   position: 'relative',
+  maxWidth: '1200px',
+  margin: '16px auto',
 }));
 
 const $Content = styled('div')(({ theme }) => ({
-  height: '90%',
-  width: '85%',
+  marginTop: '32px',
+  width: '100%',
   color: 'white',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
   zIndex: '99',
 }));
 
@@ -40,7 +38,7 @@ if (localStorage.getItem('token')) setAuthToken(localStorage.getItem('token'));
 
 function App() {
   const {
-    userContext: { isLoading, isAuthenticated, getUser },
+    userContext: { isLoading, isAuthenticated, getUser, logout },
   } = useStore();
 
   useEffect(() => {
@@ -49,7 +47,16 @@ function App() {
 
   return (
     <$Container>
-      <$Header>Simple Auth</$Header>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <$Header>Simple Auth</$Header>
+        <div>
+          {isAuthenticated && (
+            <Button onClick={logout} variant='contained' startIcon={<LogoutIcon />}>
+              Logout
+            </Button>
+          )}
+        </div>
+      </div>
       <$Content>{!isLoading && (isAuthenticated ? <PrivatePage /> : <LoginPage />)}</$Content>
     </$Container>
   );

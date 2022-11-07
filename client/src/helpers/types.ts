@@ -13,5 +13,6 @@ export interface IUser {
 export interface IUserInfo {
   userInfo: IUser;
   isAuthenticated: boolean;
+  users: IUser[];
   isLoading: boolean;
 }

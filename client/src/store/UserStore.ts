@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { SignInFormik } from 'formik-config/SignInUserFormik';
 import setAuthToken from 'helpers/set-auth-token';
-import { IUserInfo } from 'helpers/types';
+import { IUser, IUserInfo } from 'helpers/types';
 
 interface IUserData {
   name: string;
@@ -20,6 +20,8 @@ export interface IUserStore extends IUserInfo {
   registerUser: (data: IRegisterUserData, resetForm: () => void) => void;
   loginUser: (data: SignInFormik, resetForm: () => void) => void;
   getUser: () => void;
+  logout: () => void;
+  getUsers: () => void;
 }
 
 export const initialState = {
@@ -33,6 +35,7 @@ export const initialState = {
   },
   isAuthenticated: false,
   isLoading: true,
+  users: [],
 };
 
 export const userStoreInitialState = {
@@ -40,11 +43,14 @@ export const userStoreInitialState = {
   registerUser: () => undefined,
   loginUser: () => undefined,
   getUser: () => undefined,
+  logout: () => undefined,
+  getUsers: () => undefined,
 };
 
 export const userStore = () => {
   const [userInfo, setUser] = useState(initialState.userInfo);
   const [isAuthenticated, setAuthenticated] = useState(initialState.isAuthenticated);
+  const [users, setUsers] = useState<IUser[]>([]);
   const [isLoading, setLoading] = useState(initialState.isLoading);
 
   const registerUser = async (userData: IRegisterUserData, resetForm: () => void) => {
@@ -57,12 +63,11 @@ export const userStore = () => {
       setAuthToken(localStorage.getItem('token'));
       setAuthenticated(true);
       setUser((prevState) => ({ ...prevState, user }));
-      setLoading(false);
       resetForm();
     } catch (error) {
-      setLoading(false);
       console.error(error);
     }
+    setLoading(false);
   };
 
   const loginUser = async (userData: SignInFormik, resetForm: () => void) => {
@@ -75,12 +80,18 @@ export const userStore = () => {
       setAuthToken(localStorage.getItem('token'));
       setAuthenticated(true);
       setUser((prevState) => ({ ...prevState, user }));
-      setLoading(false);
       resetForm();
     } catch (error) {
-      setLoading(false);
       console.error(error);
     }
+    setLoading(false);
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setAuthToken('');
+    setAuthenticated(false);
+    setUsers([]);
   };
 
   const getUser = async () => {
@@ -91,9 +102,20 @@ export const userStore = () => {
       } = await axios('http://localhost:5000/api/user');
       setAuthenticated(true);
       setUser((prevState) => ({ ...prevState, user }));
-      setLoading(false);
     } catch (error) {
-      setLoading(false);
+      console.error(error);
+    }
+    setLoading(false);
+  };
+
+  const getUsers = async () => {
+    try {
+      const {
+        data: { users },
+      } = await axios('http://localhost:5000/api/users');
+
+      setUsers(users);
+    } catch (error) {
       console.error(error);
     }
   };
@@ -102,8 +124,11 @@ export const userStore = () => {
     userInfo,
     isAuthenticated,
     isLoading,
+    users,
     registerUser,
     loginUser,
     getUser,
+    logout,
+    getUsers,
   };
 };

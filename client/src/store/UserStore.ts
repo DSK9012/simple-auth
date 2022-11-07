@@ -22,6 +22,7 @@ export interface IUserStore extends IUserInfo {
   getUser: () => void;
   logout: () => void;
   getUsers: () => void;
+  removeUser: (userId: string) => void;
 }
 
 export const initialState = {
@@ -45,6 +46,7 @@ export const userStoreInitialState = {
   getUser: () => undefined,
   logout: () => undefined,
   getUsers: () => undefined,
+  removeUser: () => undefined,
 };
 
 export const userStore = () => {
@@ -120,6 +122,15 @@ export const userStore = () => {
     }
   };
 
+  const removeUser = async (userId: string) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/user/delete/${userId}`);
+      setUsers((prevState) => prevState.filter((user) => user._id !== userId));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     userInfo,
     isAuthenticated,
@@ -130,5 +141,6 @@ export const userStore = () => {
     getUser,
     logout,
     getUsers,
+    removeUser,
   };
 };

@@ -99,7 +99,7 @@ router.put('/user/update', auth, async (req, res) => {
   }
 });
 
-router.delete('/user/delete', auth, async (req, res) => {
+router.delete('/user/delete/:userId', auth, async (req, res) => {
   try {
     userController.deleteUser(
       req,

@@ -80,6 +80,28 @@ const theme = createTheme({
         },
       },
     },
+    MuiTableContainer: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'inherit',
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          color: '#fff',
+          borderBottom: '1px solid rgb(100 100 100)',
+        },
+      },
+    },
+    MuiTableBody: {
+      styleOverrides: {
+        root: {
+          fontWeight: 'normal',
+        },
+      },
+    },
     MuiSkeleton: {
       styleOverrides: {
         root: {

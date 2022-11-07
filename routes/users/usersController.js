@@ -127,7 +127,6 @@ const userController = {
           reactExperience: getQuery(req.query.exp),
         };
       }
-      console.log(query);
       const users = await User.find(query).select('-password');
       return successCB({ users });
     } catch (error) {
@@ -147,7 +146,7 @@ const userController = {
   },
   deleteUser: async (req, res, successCB, errorCB) => {
     try {
-      await User.deleteOne({ _id: req.body.userId });
+      await User.deleteOne({ _id: req.params.userId });
       return successCB('User deleted successfully.');
     } catch (error) {
       return errorCB(error);

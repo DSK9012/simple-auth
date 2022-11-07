@@ -18,8 +18,6 @@ const $Content = styled('div')(({ theme }) => ({
   marginTop: '32px',
   width: '100%',
   color: 'white',
-  display: 'flex',
-  alignItems: 'center',
   zIndex: '99',
 }));
 

@@ -21,8 +21,8 @@ export interface IUserStore extends IUserInfo {
   loginUser: (data: SignInFormik, resetForm: () => void) => void;
   getUser: () => void;
   logout: () => void;
-  getUsers: () => void;
   removeUser: (userId: string) => void;
+  getUsers: (searchTerm: string, reactExp: string) => void;
 }
 
 export const initialState = {
@@ -110,22 +110,21 @@ export const userStore = () => {
     setLoading(false);
   };
 
-  const getUsers = async () => {
+  const removeUser = async (userId: string) => {
     try {
-      const {
-        data: { users },
-      } = await axios('http://localhost:5000/api/users');
-
-      setUsers(users);
+      await axios.delete(`http://localhost:5000/api/user/delete/${userId}`);
+      setUsers((prevState) => prevState.filter((user) => user._id !== userId));
     } catch (error) {
       console.error(error);
     }
   };
 
-  const removeUser = async (userId: string) => {
+  const getUsers = async (searchTerm: string, reactExp: string) => {
     try {
-      await axios.delete(`http://localhost:5000/api/user/delete/${userId}`);
-      setUsers((prevState) => prevState.filter((user) => user._id !== userId));
+      const {
+        data: { users },
+      } = await axios.post(`http://localhost:5000/api/users/search?search=${searchTerm}&exp=${reactExp}`);
+      setUsers(users);
     } catch (error) {
       console.error(error);
     }

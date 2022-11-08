@@ -1,7 +1,20 @@
-import { useEffect, useState, MouseEvent } from 'react';
+import { useEffect, useState, MouseEvent, ChangeEvent } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { Box, Fade, IconButton, InputAdornment, Popper, styled } from '@mui/material';
+import {
+  Box,
+  Button,
+  Fade,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  IconButton,
+  InputAdornment,
+  Popper,
+  Radio,
+  RadioGroup,
+  styled,
+} from '@mui/material';
 import CustomTextField from 'helpers/CustomTextField';
 import { useStore } from 'store/Store';
 import RenderUsers from './RenderUsers';
@@ -21,6 +34,8 @@ const PrivatePage = () => {
     userContext: { getUsers },
   } = useStore();
   const [open, setOpen] = useState(false);
+  const [reactExp, setReactExp] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -32,8 +47,16 @@ const PrivatePage = () => {
   const id = canBeOpen ? 'transition-popper' : undefined;
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    getUsers(searchTerm, reactExp);
+  }, [searchTerm, reactExp]);
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+  };
+
+  const handleReactExpChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setReactExp(event.target.value);
+  };
 
   return (
     <>
@@ -53,10 +76,7 @@ const PrivatePage = () => {
             type='text'
             title=''
             name='searchTerm'
-            // value={email}
-            onChange={() => {}}
-            // error={hasError('email')}
-            // helperText={getHelpText('email')}
+            onChange={handleSearchChange}
             sx={{
               width: '350px',
             }}
@@ -66,10 +86,35 @@ const PrivatePage = () => {
           <IconButton aria-label='delete' size='large' onClick={handleClick}>
             <FilterAltIcon htmlColor='#fff' />
           </IconButton>
-          <Popper id={id} open={open} anchorEl={anchorEl} transition>
+          <Popper id={id} open={open} anchorEl={anchorEl} transition placement='left-start'>
             {({ TransitionProps }) => (
               <Fade {...TransitionProps} timeout={350}>
-                <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper' }}>The content of the Popper.</Box>
+                <Box sx={{ p: 2, bgcolor: 'background.paper', borderRadius: '5px', minWidth: '200px' }}>
+                  <FormControl>
+                    <FormLabel id='demo-radio-buttons-group-label' sx={{ color: 'black !important' }}>
+                      React Experience
+                    </FormLabel>
+                    <RadioGroup
+                      value={reactExp}
+                      onChange={handleReactExpChange}
+                      aria-labelledby='demo-radio-buttons-group-label'
+                      name='radio-buttons-group'
+                    >
+                      <FormControlLabel value='1-2' control={<Radio />} label='1-2 Years' />
+                      <FormControlLabel value='3-5' control={<Radio />} label='3-5 Years' />
+                      <FormControlLabel value='5-10' control={<Radio />} label='5-10 Years' />
+                      <FormControlLabel value='>10' control={<Radio />} label='>10 Years' />
+                    </RadioGroup>
+                  </FormControl>
+                  <br />
+                  <Button
+                    size='small'
+                    sx={{ textDecoration: 'none', fontWeight: 'regular' }}
+                    onClick={() => setReactExp('')}
+                  >
+                    Clear
+                  </Button>
+                </Box>
               </Fade>
             )}
           </Popper>

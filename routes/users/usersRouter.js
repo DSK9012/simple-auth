@@ -73,7 +73,7 @@ router.get('/users', auth, async (req, res) => {
   }
 });
 
-router.post('/user/search', auth, async (req, res) => {
+router.post('/users/search', auth, async (req, res) => {
   try {
     userController.searchUsers(
       req,

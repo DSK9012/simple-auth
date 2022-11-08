@@ -116,11 +116,13 @@ const userController = {
       if (req.query.search && req.query.exp) {
         query = {
           name: new RegExp(req.query.search, 'i'),
+          email: new RegExp(req.query.search, 'i'),
           reactExperience: getQuery(req.query.exp),
         };
       } else if (req.query.search) {
         query = {
           name: new RegExp(req.query.search, 'i'),
+          email: new RegExp(req.query.search, 'i'),
         };
       } else if (req.query.exp) {
         query = {

@@ -102,7 +102,7 @@ const PrivatePage = () => {
                     >
                       <FormControlLabel value='1-2' control={<Radio />} label='1-2 Years' />
                       <FormControlLabel value='3-5' control={<Radio />} label='3-5 Years' />
-                      <FormControlLabel value='5-10' control={<Radio />} label='5-10 Years' />
+                      <FormControlLabel value='6-10' control={<Radio />} label='6-10 Years' />
                       <FormControlLabel value='>10' control={<Radio />} label='>10 Years' />
                     </RadioGroup>
                   </FormControl>

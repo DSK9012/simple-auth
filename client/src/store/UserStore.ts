@@ -22,6 +22,7 @@ export interface IUserStore extends IUserInfo {
   getUser: () => void;
   logout: () => void;
   removeUser: (userId: string) => void;
+  updateUser: (userId: string, name: string, reactExp: string) => void;
   getUsers: (searchTerm: string, reactExp: string) => void;
 }
 
@@ -47,6 +48,7 @@ export const userStoreInitialState = {
   logout: () => undefined,
   getUsers: () => undefined,
   removeUser: () => undefined,
+  updateUser: () => undefined,
 };
 
 export const userStore = () => {
@@ -130,6 +132,19 @@ export const userStore = () => {
     }
   };
 
+  const updateUser = async (userId: string, name: string, reactExperience: string) => {
+    try {
+      await axios.put('http://localhost:5000/api/user/update', { userId, name, reactExperience });
+      const copyUsers = [...users];
+      const index = copyUsers.findIndex((user) => user._id === userId);
+      copyUsers[index].name = name;
+      copyUsers[index].reactExperience = Number(reactExperience);
+      setUsers(copyUsers);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     userInfo,
     isAuthenticated,
@@ -141,5 +156,6 @@ export const userStore = () => {
     logout,
     getUsers,
     removeUser,
+    updateUser,
   };
 };
